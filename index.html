@@ -13,7 +13,8 @@
          <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
          <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
          <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+         <link rel="stylesheet" href="css/style.css">
 <title>CHAT APP</title>
 </head>
 <body>
@@ -22,14 +23,16 @@
 
     <div class="container-fluid bg-white chatbox shadow-lg rounded" >
         <div class="row h-100">
-            <div class="col-md-4 pr-0 d-none d-md-block">
+            <div class="col-md-4 pr-0 d-none d-md-block" id="side-1">
                <div class="card h-100">
                    <div class="card_header">
                        <div class="row">
-                           <div class="col-md-7">
+                           <div class="col-10 col-sm-10 col-md-10">
                                <img src="img/user.png" alt="profile" class="profile_pic rounded-circle p-2 ml-2"/>
                            </div>
-                           <div class="col-md-5"></div>
+                           <div class="col-2 col-sm-2 col-md-2 mt-2">
+                               <i class="fa fa-arrow-left fa-2x d-md-none" style="cursor: pointer;" onclick="hideChatList()"></i>
+                           </div>
                        </div>
                    </div>
                    <ul class="list-group list-group-flush" style="background-color: #f8f8f8;">
@@ -74,14 +77,17 @@
                    </ul>
                </div>
             </div>
-            <div class="col-md-8 pl-0">
+            <div class="col-md-8 pl-0" id="side-2">
                 <div id="ChatPanel" class="card h-100" style="display:none">
                     <div class="card-header">
                         <div class="row">
+                            <div class="col-1 col-sm-1 col-md-1 col-lg-1">
+                                <i class="fa fa-list mt-2 d-md-none" style="cursor:pointer; font-size: 28px;" onclick="showChatList()"></i>
+                            </div>
                             <div class="col-2 col-sm-2 col-md-2 col-lg-1">
                                 <img src="img/user.png" alt="profile pic" class="profile-pic rounded-circle"/>
                             </div>
-                            <div class="col-6 col-sm-6 col-md-6 col-lg-8">
+                            <div class="col-5 col-sm-5 col-md-5 col-lg-7">
                                 <div class="name">Name</div>
                                 <div class="under_name pt-1">Last Seen 9/28/2020</div>
                             </div>
@@ -92,14 +98,35 @@
                             </div>
                         </div>
                     </div>
-                    <div class="card-body"></div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-2 col-sm-1 col-md-1">
+                                <img src="img/user.png" alt="chat pic" class="chat_pic rounded-circle"/>
+                            </div>
+                            <div class="col-6 col-sm-7 col-md-7">
+                               <p class="receive">Some text is here
+                                   <span class="time float-right">1:28 PM</span>
+                               </p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <div class="col-6 col-sm-7 col-md-7">
+                               <p class="sent float-right">Some text is here
+                                   <span class="time float-right">1:28 PM</span>
+                               </p>
+                            </div>
+                            <div class="col-2 col-sm-1 col-md-1">
+                                   <img src="img/user.png" alt="chat pic" class="chat_pic rounded-circle"/>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card-footer">
                         <div class="row">
                             <div class="col-2 col-md-1">
                                 <i class="fa fa-grin fa-2x mt-1"></i>
                             </div>
                             <div class="col-8 col-md-10">
-                                <input class="form-control form-rounded" type="text" placeholder="Type text"/>
+                                <input onclick="SendMessage()" class="form-control form-rounded" type="text" placeholder="Type text"/>
                             </div>
                             <div class="col-2 col-md-1">
                                 <i class="fa fa-microphone fa-2x"></i>
@@ -111,6 +138,7 @@
                 <div id="divStart" class="text-center">
                     <i class="fa fa-comments mt-5" style="font-size:250px"></i>
                     <h2 class="mt-3">SELECT YOUR CHAT</h2>
+                    <a href="#" onclick="showChatList()" class="d-md-none">New Chat</a>
                 </div>
             </div>
         </div>
@@ -127,7 +155,9 @@
 <!-- Page level plugins -->
 <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
 <!-- Page level custom scripts -->
-
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="js/chat.js"></script>
   <!-- Page level plugins -->
 </body>
