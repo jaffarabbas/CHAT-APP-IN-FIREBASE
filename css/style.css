@@ -60,3 +60,29 @@ body{
 	font-size:20px;
 	color:#9CA1A3;
 }
+
+.chat_pic{
+	height: 30px;
+	width: 30px;
+}
+
+.receive{
+	background-color:lightgreen;
+	border-radius: 1rem;
+	padding:10px 15px;
+	display: inline-block;
+}
+
+.time{
+	font-size: 10px;
+	color:#9CA1A3;
+	margin-top: 3%;
+	margin-left: 1%;
+}
+
+.sent{
+	background-color:whitesmoke;
+	border-radius: 1rem;
+	padding:10px 15px;
+	display: inline-block;
+}
