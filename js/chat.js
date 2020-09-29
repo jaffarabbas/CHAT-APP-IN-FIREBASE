@@ -49,6 +49,37 @@ function SendMessage(){
 ///////////////////////////////////////////////////////////////////////////
 /******************************************firebase starts********************************************/
 
+function PopulateFriendList(){
+    document.getElementById('lstFriend').innerHTML =`<div class="text-center">
+                                                     <span class="spinner-border text-primary mt-5" style="width:7rem;height:7rem;"></span>
+                                                     </div>`;
+     
+    var db = firebase.database().ref('users');
+        var lst = '';
+        db.on('value',function(users){
+            if(users.hasChildren()){
+                lst = `<li class="list-group-item"  style="background-color: #f8f8f8;">
+                       <input type="text" placeholder="Search for new Item" class="form-control form-rounded"/>
+                       </li>`;
+            }
+            users.forEach(function(data){
+                var user = data.val();
+                lst += `<li class="list-group-item list-group-item-action">
+                        <div class="row">
+                        <div class="col-md-2">
+                        <img src="${user.photoURL}" alt="front pic" class="friend_pic rounded-circle"/>
+                        </div>
+                        <div class="col-md-10" style="cursor:pointer;">
+                            <div class="name">${user.name}</div>
+                        </div>
+                        </div>
+                        </li>`;
+            });
+
+            document.getElementById('lstFriend').innerHTML = lst;
+        });                                                  
+}
+
 function signIn(){
     var provider = new firebase.auth.GoogleAuthProvider();
     firebase.auth().signInWithPopup(provider);
