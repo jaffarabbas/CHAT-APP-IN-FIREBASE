@@ -64,11 +64,59 @@ function onFireBaseStateChanged(){
 
 function onStateChanged(user){
     if(user){
-        document.getElementById('image_Profile').src = firebase.auth().currentUser.photoURL;
-        document.getElementById('image_Profile').title = firebase.auth().currentUser.displayName;
+        var userProfile = {email:'',name:'',photoURL:''};
+
+        userProfile.email = firebase.auth().currentUser.email;
+        userProfile.name = firebase.auth().currentUser.displayName;
+        userProfile.photoURL = firebase.auth().currentUser.photoURL;
+
+
+        var db = firebase.database().ref('users');
+        var flag = false;
+        db.on('value',function(users){
+            users.forEach(function(data){
+                var user = data.val();
+                if(user.email === userProfile.email)
+                    flag = true;
+            });
+
+            if(flag === false){
+                //data
+                firebase.database().ref('users').push(userProfile,callback);
+            }else{
+                document.getElementById('image_Profile').src = firebase.auth().currentUser.photoURL;
+                document.getElementById('image_Profile').title = firebase.auth().currentUser.displayName;
+        
+                document.getElementById('LnkSignIn').style = 'display:none';
+                document.getElementById('LnkSignOut').style = '';      
+            }
+        });
+        
+    }
+    else{
+        document.getElementById('image_Profile').src = 'img/user.png';
+        document.getElementById('image_Profile').title = '';
+
+        document.getElementById('LnkSignIn').style = '';
+        document.getElementById('LnkSignOut').style = 'display:none';
     }
 }
 
+/////////////////////////////////
+/*info function*/
+
+function callback(error){
+    if(error){
+        alert(error)
+
+    }else{
+        document.getElementById('image_Profile').src = firebase.auth().currentUser.photoURL;
+        document.getElementById('image_Profile').title = firebase.auth().currentUser.displayName;
+        
+        document.getElementById('LnkSignIn').style = 'display:none';
+        document.getElementById('LnkSignOut').style = '';
+    }
+}
 
 /////////////////////////
 /*Call auth state change */
