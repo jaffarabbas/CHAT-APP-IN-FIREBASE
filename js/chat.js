@@ -1,7 +1,42 @@
-function StartChat(id){
-    document.getElementById('ChatPanel').removeAttribute('style');
-    document.getElementById('divStart').setAttribute('style','display:none');
-    hideChatList();
+var currentUserKey = '';
+var chatKey = '';
+function StartChat(friendKey, friendName, friendPhoto){
+
+    var friendList = {friendId : friendKey,userId:currentUserKey};
+    var flag = false;
+    var db = firebase.database().ref('friend_List');
+        db.on('value',function(friends){
+            friends.forEach(function(data){
+                var user = data.val();
+                if((user.friendId === friendList.friendId && user.userId && friendList.userId) || (user.userId === friendList.userId && user.userId && friendList.friendId)){
+                    flag = true;
+                    chatKey = data.key;
+                }
+            });
+
+            if(flag === false){
+                chatKey = firebase.database().ref('friend_List').push(friendList,function(error){
+                    if(error){
+                        alert(error);
+                    }else{
+                        document.getElementById('ChatPanel').removeAttribute('style');
+                        document.getElementById('divStart').setAttribute('style','display:none');
+                        hideChatList();
+                    }
+                }).getKey();
+            }else{
+                document.getElementById('ChatPanel').removeAttribute('style');
+                document.getElementById('divStart').setAttribute('style','display:none');
+                hideChatList();
+            }
+
+            ////////////////////
+            //chat pane user detials
+            document.getElementById('divChatName').innerHTML = friendName;
+            document.getElementById('imgChat').src = friendPhoto;
+        });   
+
+    
 }
 
 ///////////////////////////////
@@ -25,23 +60,34 @@ function OnKeyDown(){
 }
 
 function SendMessage(){
-    var message = `<div class="row justify-content-end">
-    <div class="col-6 col-sm-7 col-md-7">
-       <p class="sent float-right">
-       ${document.getElementById('textMessage').value}
-           <span class="time float-right">1:28 PM</span>
-       </p>
-    </div>
-    <div class="col-2 col-sm-1 col-md-1">
-           <img src="img/user.png" alt="chat pic" class="chat_pic rounded-circle"/>
-    </div>
-    </div>`;
+    var chatMessage = {
+        msg : document.getElementById('textMessage').value,
+        dateTime : new Date().toLocaleString()
+    };
+    firebase.database().ref('chatMessages').child(chatKey).push(chatMessage,function(error){
+        if(error){
+            alert(error);
+        }
+        else{
+            var message = `<div class="row justify-content-end">
+            <div class="col-6 col-sm-7 col-md-7">
+            <p class="sent float-right">
+            ${document.getElementById('textMessage').value}
+                <span class="time float-right">${chatMessage.dateTime}</span>
+            </p>
+            </div>
+            <div class="col-2 col-sm-1 col-md-1">
+                <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
+            </div>
+            </div>`;
 
-    document.getElementById('messages').innerHTML += message;
-    document.getElementById('textMessage').value = '';
-    document.getElementById('textMessage').focus();
-    //scroll overdolw downward when chat exit from card
-    document.getElementById('messages').scrollTo(0,document.getElementById('messages').clientHeight);
+            document.getElementById('messages').innerHTML += message;
+            document.getElementById('textMessage').value = '';
+            document.getElementById('textMessage').focus();
+            //scroll overdolw downward when chat exit from card
+            document.getElementById('messages').scrollTo(0,document.getElementById('messages').clientHeight);
+        }
+    });
 }
 
 
@@ -64,7 +110,8 @@ function PopulateFriendList(){
             }
             users.forEach(function(data){
                 var user = data.val();
-                lst += `<li class="list-group-item list-group-item-action">
+                if(user.email !== firebase.auth().currentUser.email){
+                    lst += `<li class="list-group-item list-group-item-action" data-dismiss="modal" onclick="StartChat('${data.key}','${user.name}','${user.photoURL}')">
                         <div class="row">
                         <div class="col-md-2">
                         <img src="${user.photoURL}" alt="front pic" class="friend_pic rounded-circle"/>
@@ -74,6 +121,7 @@ function PopulateFriendList(){
                         </div>
                         </div>
                         </li>`;
+                }
             });
 
             document.getElementById('lstFriend').innerHTML = lst;
@@ -107,8 +155,10 @@ function onStateChanged(user){
         db.on('value',function(users){
             users.forEach(function(data){
                 var user = data.val();
-                if(user.email === userProfile.email)
+                if(user.email === userProfile.email){
+                    currentUserKey = data.key;
                     flag = true;
+                }
             });
 
             if(flag === false){
@@ -121,15 +171,20 @@ function onStateChanged(user){
                 document.getElementById('LnkSignIn').style = 'display:none';
                 document.getElementById('LnkSignOut').style = '';      
             }
+            //new chat enabled when user sign in
+            document.getElementById('LnkNewChat').classList.remove('disabled');
         });
         
     }
     else{
         document.getElementById('image_Profile').src = 'img/user.png';
         document.getElementById('image_Profile').title = '';
-
+        
         document.getElementById('LnkSignIn').style = '';
         document.getElementById('LnkSignOut').style = 'display:none';
+        
+        //new chat disabled when user is not sign in
+        document.getElementById('LnkNewChat').classList.add('disabled');
     }
 }
 
