@@ -9,7 +9,7 @@
          <!-- Custom fonts for this template-->
          <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
          <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-         <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
+         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
          <!-- <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css"> -->
          <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
          <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -32,22 +32,41 @@
                            <div class="col-9 col-sm-9 col-md-9">
                             <img id="image_Profile" src="img/user.png" alt="profile" class="profile_pic rounded-circle p-2 ml-2"/>
                            </div>
-                           <div class="col-2 col-sm-2 col-md-2 mt-2">
+                           <div class="col-2 col-sm-2 col-md-2" style="margin-top: 12px;">
                                <div class="dropleft">
                                    <span class="dropdown-toggle" data-toggle="dropdown" >
-                                       <i class="fa fa-ellipsis-v icon" style="cursor: pointer;" onclick="hideChatList()"></i>
+                                       <i class="fa fa-ellipsis-v icon" style="cursor: pointer; font-size: 22px;" onclick="hideChatList()"></i>
                                    </span>
                                    <div class="dropdown-menu">
-                                       <a href="#" class="dropdown-item">New Chat</a>
+                                       <a href="#" onclick="PopulateFriendList()" class="dropdown-item" data-toggle="modal" data-target="#modalFriendList">New Chat</a>
                                        <a href="#" id="LnkSignIn" onclick="signIn()" class="dropdown-item">Sign In</a>
                                        <a href="#" id="LnkSignOut" onclick="signOut()" class="dropdown-item" style="display:none">Sign Out</a>
+                                   </div>
+
+
+                                   <!--modal of user-->
+
+                                   <div class="modal fade" id="modalFriendList">
+                                       <div class="modal-dialog">
+                                           <div class="modal-content">
+                                               <div class="card">
+                                                   <div class="card-header">
+                                                       Friend List
+                                                       <span class="close" data-dismiss="modal" style="cursor:pointer;">&times;</span>
+                                                   </div>
+                                                   <ul class="list-group list-group-flush" id="lstFriend">
+                                                       
+                                                   </ul>
+                                               </div>
+                                           </div>
+                                       </div>
                                    </div>
                                </div>
                         </div>
                        </div>
                    </div>
-                   <ul class="list-group list-group-flush" style="background-color: #f8f8f8;">
-                       <li class="list-group-item">
+                   <ul class="list-group list-group-flush">
+                       <li class="list-group-item"  style="background-color: #f8f8f8;">
                            <input type="text" placeholder="Search for new Item" class="form-control form-rounded"/>
                        </li>
                        <li class="list-group-item list-group-item-action" onclick="StartChat(1)">
