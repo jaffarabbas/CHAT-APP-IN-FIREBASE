@@ -38,7 +38,7 @@
                                        <i class="fa fa-ellipsis-v icon" style="cursor: pointer; font-size: 22px;" onclick="hideChatList()"></i>
                                    </span>
                                    <div class="dropdown-menu">
-                                       <a href="#" onclick="PopulateFriendList()" class="dropdown-item" data-toggle="modal" data-target="#modalFriendList">New Chat</a>
+                                       <a href="#" id="LnkNewChat" onclick="PopulateFriendList()" class="dropdown-item" data-toggle="modal" data-target="#modalFriendList">New Chat</a>
                                        <a href="#" id="LnkSignIn" onclick="signIn()" class="dropdown-item">Sign In</a>
                                        <a href="#" id="LnkSignOut" onclick="signOut()" class="dropdown-item" style="display:none">Sign Out</a>
                                    </div>
@@ -115,11 +115,11 @@
                                 <i class="fa fa-list mt-2 d-md-none" style="cursor:pointer; font-size: 28px;" onclick="showChatList()"></i>
                             </div>
                             <div class="col-2 col-sm-2 col-md-2 col-lg-1">
-                                <img src="img/user.png" alt="profile pic" class="profile-pic rounded-circle"/>
+                                <img src="img/user.png" id="imgChat" alt="profile pic" class="profile-pic rounded-circle"/>
                             </div>
                             <div class="col-5 col-sm-5 col-md-5 col-lg-7">
-                                <div class="name">Name</div>
-                                <div class="under_name pt-1">Last Seen 9/28/2020</div>
+                                <div class="name" id="divChatName">Name</div>
+                                <div class="under_name pt-1" id="divChatSeen">Last Seen 9/28/2020</div>
                             </div>
                             <div class="col-4 col-sm-4 col-md-4 col-lg-3 icon mt-2">
                                 <i class="fa fa-search"></i>
