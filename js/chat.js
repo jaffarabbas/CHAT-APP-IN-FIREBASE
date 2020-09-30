@@ -1,5 +1,6 @@
 var currentUserKey = '';
 var chatKey = '';
+
 function StartChat(friendKey, friendName, friendPhoto){
 
     var friendList = {friendId : friendKey,userId:currentUserKey};
@@ -34,9 +35,10 @@ function StartChat(friendKey, friendName, friendPhoto){
             //chat pane user detials
             document.getElementById('divChatName').innerHTML = friendName;
             document.getElementById('imgChat').src = friendPhoto;
-        });   
 
-    
+            /////////////////////
+            /*display chat messgae from database */
+        });   
 }
 
 ///////////////////////////////
@@ -73,7 +75,7 @@ function SendMessage(){
             <div class="col-6 col-sm-7 col-md-7">
             <p class="sent float-right">
             ${document.getElementById('textMessage').value}
-                <span class="time float-right">${chatMessage.dateTime}</span>
+                <span class="time float-right">0:0</span>
             </p>
             </div>
             <div class="col-2 col-sm-1 col-md-1">
@@ -94,6 +96,39 @@ function SendMessage(){
 
 ///////////////////////////////////////////////////////////////////////////
 /******************************************firebase starts********************************************/
+
+function LoadChatList(){
+    var db = firebase.database().ref('friend_List');    
+    db.on('value',function(lists){
+        document.getElementById('lstChat').innerHTML = ` <li class="list-group-item"  style="background-color: #f8f8f8;">
+                                                              <input type="text" placeholder="Search for new Item" class="form-control form-rounded"/>
+                                                              </li>`;
+        lists.forEach(function(data){
+            var lst = data.val();
+            var friendKey = '';
+            if(lst.friendId === currentUserKey){
+                friendKey = lst.userId;
+            }else if(lst.userId === currentUserKey){
+                friendKey = lst.friendId;
+            }
+
+            firebase.database().ref('users').child(friendKey).on('value',function(data){
+                var user = data.val();
+                document.getElementById('lstChat').innerHTML += ` <li class="list-group-item list-group-item-action" onclick="StartChat('${data.key}','${user.name}','${user.photoURL}')">
+               <div class="row">
+                   <div class="col-md-2">
+                    <img src="${user.photoURL}" alt="front pic" class="friend_pic rounded-circle"/>
+                   </div>
+                   <div class="col-md-10" style="cursor:pointer;">
+                       <div class="name">${user.name}</div>
+                       <div class="under_name pt-1">This is some Message text</div>
+                    </div>
+                </div>
+                </li>`;
+            });
+        });
+    });
+}
 
 function PopulateFriendList(){
     document.getElementById('lstFriend').innerHTML =`<div class="text-center">
@@ -173,6 +208,8 @@ function onStateChanged(user){
             }
             //new chat enabled when user sign in
             document.getElementById('LnkNewChat').classList.remove('disabled');
+
+            LoadChatList();
         });
         
     }
