@@ -36,12 +36,53 @@ function StartChat(friendKey, friendName, friendPhoto){
             document.getElementById('divChatName').innerHTML = friendName;
             document.getElementById('imgChat').src = friendPhoto;
 
+            document.getElementById('messages').innerHTML = '';
             /////////////////////
             /*display chat messgae from database */
+            LoadChatMessages(chatKey);
         });   
 }
 
 ///////////////////////////////
+
+function LoadChatMessages(chatKey){
+    var db = firebase.database().ref('chatMessages').child(chatKey);
+    db.on('value',function(chats){
+        var messageDisplay = '';
+        chats.forEach(function(data){
+            var chat = data.val();
+            var dateTime = chat.dateTime.split(",");          
+            if(chat.userId !== currentUserKey){
+               messageDisplay  += ` <div class="row">
+               <div class="col-2 col-sm-1 col-md-1">
+                   <img src="img/user.png" alt="chat pic" class="chat_pic rounded-circle"/>
+               </div>
+               <div class="col-6 col-sm-7 col-md-7">
+                  <p class="receive">
+                  ${chat.msg}
+                  <span class="time float-right" title="${dateTime[0]}">${dateTime[1]}</span>
+                  </p>
+               </div>
+               </div>`;
+            }else{
+                messageDisplay += `<div class="row justify-content-end">
+                <div class="col-6 col-sm-7 col-md-7">
+                <p class="sent float-right">
+                ${chat.msg}
+                    <span class="time float-right" title="${dateTime[0]}">${dateTime[1]}</span>
+                </p>
+                </div>
+                <div class="col-2 col-sm-1 col-md-1">
+                    <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
+                </div>
+                </div>`;
+            }
+        });
+        document.getElementById('messages').innerHTML = messageDisplay;
+        //scroll overdolw downward when chat exit from card
+        document.getElementById('messages').scrollTo(0,document.getElementById('messages').clientHeight);
+    });
+}
 
 function showChatList(){
     document.getElementById('side-1').classList.remove('d-none','d-md-block');
@@ -63,6 +104,7 @@ function OnKeyDown(){
 
 function SendMessage(){
     var chatMessage = {
+        userId: currentUserKey,
         msg : document.getElementById('textMessage').value,
         dateTime : new Date().toLocaleString()
     };
@@ -71,23 +113,23 @@ function SendMessage(){
             alert(error);
         }
         else{
-            var message = `<div class="row justify-content-end">
-            <div class="col-6 col-sm-7 col-md-7">
-            <p class="sent float-right">
-            ${document.getElementById('textMessage').value}
-                <span class="time float-right">0:0</span>
-            </p>
-            </div>
-            <div class="col-2 col-sm-1 col-md-1">
-                <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
-            </div>
-            </div>`;
+        //     var message = `<div class="row justify-content-end">
+        //     <div class="col-6 col-sm-7 col-md-7">
+        //     <p class="sent float-right">
+        //     ${document.getElementById('textMessage').value}
+        //         <span class="time float-right">0:0</span>
+        //     </p>
+        //     </div>
+        //     <div class="col-2 col-sm-1 col-md-1">
+        //         <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
+        //     </div>
+        //     </div>`;
 
-            document.getElementById('messages').innerHTML += message;
+        //     document.getElementById('messages').innerHTML += message;
             document.getElementById('textMessage').value = '';
             document.getElementById('textMessage').focus();
-            //scroll overdolw downward when chat exit from card
-            document.getElementById('messages').scrollTo(0,document.getElementById('messages').clientHeight);
+        //     //scroll overdolw downward when chat exit from card
+        //     document.getElementById('messages').scrollTo(0,document.getElementById('messages').clientHeight);
         }
     });
 }
@@ -112,20 +154,22 @@ function LoadChatList(){
                 friendKey = lst.friendId;
             }
 
-            firebase.database().ref('users').child(friendKey).on('value',function(data){
-                var user = data.val();
-                document.getElementById('lstChat').innerHTML += ` <li class="list-group-item list-group-item-action" onclick="StartChat('${data.key}','${user.name}','${user.photoURL}')">
-               <div class="row">
-                   <div class="col-md-2">
-                    <img src="${user.photoURL}" alt="front pic" class="friend_pic rounded-circle"/>
-                   </div>
-                   <div class="col-md-10" style="cursor:pointer;">
-                       <div class="name">${user.name}</div>
-                       <div class="under_name pt-1">This is some Message text</div>
+            if(friendKey !== ""){
+                firebase.database().ref('users').child(friendKey).on('value',function(data){
+                    var user = data.val();
+                    document.getElementById('lstChat').innerHTML += ` <li class="list-group-item list-group-item-action" onclick="StartChat('${data.key}','${user.name}','${user.photoURL}')">
+                   <div class="row">
+                       <div class="col-md-2">
+                        <img src="${user.photoURL}" alt="front pic" class="friend_pic rounded-circle"/>
+                       </div>
+                       <div class="col-md-10" style="cursor:pointer;">
+                           <div class="name">${user.name}</div>
+                           <div class="under_name pt-1">This is some Message text</div>
+                        </div>
                     </div>
-                </div>
-                </li>`;
-            });
+                    </li>`;
+                });
+            }
         });
     });
 }
