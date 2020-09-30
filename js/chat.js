@@ -9,7 +9,7 @@ function StartChat(friendKey, friendName, friendPhoto){
         db.on('value',function(friends){
             friends.forEach(function(data){
                 var user = data.val();
-                if((user.friendId === friendList.friendId && user.userId && friendList.userId) || (user.userId === friendList.userId && user.userId && friendList.friendId)){
+                if((user.friendId === friendList.friendId && user.userId && friendList.userId) || (user.friendId  === friendList.userId && user.userId && friendList.friendId)){
                     flag = true;
                     chatKey = data.key;
                 }
@@ -37,6 +37,10 @@ function StartChat(friendKey, friendName, friendPhoto){
             document.getElementById('imgChat').src = friendPhoto;
 
             document.getElementById('messages').innerHTML = '';
+
+            OnKeyDown();
+            document.getElementById('textMessage').value = '';
+            document.getElementById('textMessage').focus();
             /////////////////////
             /*display chat messgae from database */
             LoadChatMessages(chatKey);
