@@ -3,13 +3,13 @@ var chatKey = '';
 
 function StartChat(friendKey, friendName, friendPhoto){
 
-    var friendList = {friendId : friendKey,userId:currentUserKey};
+    var friendList = {friendId : friendKey,userId: currentUserKey };
     var flag = false;
     var db = firebase.database().ref('friend_List');
-        db.on('value',function(friends){
+        db.on('value',function (friends) {
             friends.forEach(function(data){
                 var user = data.val();
-                if((user.friendId === friendList.friendId && user.userId && friendList.userId) || (user.friendId  === friendList.userId && user.userId && friendList.friendId)){
+                if ((user.friendId === friendList.friendId && user.userId === friendList.userId) || ((user.friendId === friendList.userId && user.userId === friendList.friendId))) {
                     flag = true;
                     chatKey = data.key;
                 }
@@ -108,7 +108,7 @@ function OnKeyDown(){
 
 function SendMessage(){
     var chatMessage = {
-        userId: currentUserKey,
+        userId : currentUserKey,
         msg : document.getElementById('textMessage').value,
         dateTime : new Date().toLocaleString()
     };
@@ -183,7 +183,7 @@ function PopulateFriendList(){
                                                      <span class="spinner-border text-primary mt-5" style="width:7rem;height:7rem;"></span>
                                                      </div>`;
      
-    var db = firebase.database().ref('users');
+        var db = firebase.database().ref('users');
         var lst = '';
         db.on('value',function(users){
             if(users.hasChildren()){
