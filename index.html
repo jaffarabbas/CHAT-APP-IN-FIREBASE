@@ -23,7 +23,7 @@
     <div class="container-fluid bg-white chatbox shadow-lg rounded" >
         <div class="row h-100">
             <div class="col-md-4 pr-0 d-none d-md-block" id="side-1">
-               <div class="card h-100">
+               <div class="card">
                    <div class="card_header">
                        <div class="row">
                            <div class="col-1 col-sm-1 col-md-1 mt-2">
@@ -34,7 +34,7 @@
                            </div>
                            <div class="col-2 col-sm-2 col-md-2" style="margin-top: 12px;">
                                <div class="dropleft">
-                                   <span class="dropdown-toggle" data-toggle="dropdown">
+                                   <span class="dropdown-toggle" data-toggle="dropdown" style="float: righ">
                                        <i class="fa fa-ellipsis-v icon" style="cursor: pointer; font-size: 22px;" onclick="hideChatList()"></i>
                                    </span>
                                    <div class="dropdown-menu">
@@ -84,9 +84,22 @@
                                 <div class="name" id="divChatName">Name</div>
                                 <div class="under_name pt-1" id="divChatSeen">Last Seen 9/28/2020</div>
                             </div>
-                            <div class="col-4 col-sm-4 col-md-4 col-lg-3 icon mt-2">
+                            <div class="icon col-4 col-sm-4 col-md-4 col-lg-3 mt-2 " style="cursor: pointer">
                                 <i class="fa fa-search"></i>
-                                <i class="fa fa-paperclip ml-4"></i>
+                                <span class="dropdown">
+                                    <span class="dropdown-toggle" data-toggle="dropdown">
+                                        <i class="fa fa-paperclip ml-4"></i>
+                                    </span>
+                                    <div class="dropdown-menu">
+                                        <a href="#" class="dropdown-item" onclick="ChooseImage()">
+                                        Image
+                                        <input onchange="SendImage(this)" type="file" id="imageFile" accept="image/*" style="display:none"/>
+                                        </a>
+                                        <a href="#" class="dropdown-item">Document</a>
+                                        <a href="#" class="dropdown-item">Carmera</a>
+                                        <a href="#" class="dropdown-item">Video</a>
+                                    </div>
+                                </span>
                                 <i class="fa fa-ellipsis-v ml-4"></i>
                             </div>
                         </div>
