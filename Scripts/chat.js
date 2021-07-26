@@ -117,7 +117,7 @@ function OnKeyDown(){
         if(error){
             alert(error);
         }
-        else if(chatMessage.msg !== ''){
+        else{
             // console.log(chatMessage.dateTime)
             // var message = `<div class="row justify-content-end">
             // <div class="col-6 col-sm-7 col-md-7">
@@ -155,7 +155,7 @@ function OnKeyDown(){
                 friendKey = lst.friendId;
             }
 
-            // if(friendKey !== ""){
+            if(friendKey !== ""){
                 firebase.database().ref('users').child(friendKey).on('value',function(data){
                     var user = data.val();
                     document.getElementById('lstChat').innerHTML += ` <li class="list-group-item list-group-item-action" onclick="StartChat('${data.key}','${user.name}','${user.photoURL}')">
@@ -170,7 +170,7 @@ function OnKeyDown(){
                     </div>
                     </li>`;
                 });
-            // }
+            }
         });
     });
 }
