@@ -1,3 +1,4 @@
+
 var firebaseConfig = {
   apiKey: "AIzaSyAcB9bKNGtP35oaqahlO6QURecXe4Bwc_8",
   authDomain: "jzchattapp.firebaseapp.com",
