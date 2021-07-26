@@ -1,7 +1,8 @@
-
+﻿// Your web app's Firebase configuration
 var firebaseConfig = {
   apiKey: "AIzaSyAcB9bKNGtP35oaqahlO6QURecXe4Bwc_8",
   authDomain: "jzchattapp.firebaseapp.com",
+  databaseURL: "https://jzchattapp-default-rtdb.firebaseio.com/",
   projectId: "jzchattapp",
   storageBucket: "jzchattapp.appspot.com",
   messagingSenderId: "96949369157",
