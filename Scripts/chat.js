@@ -1,12 +1,18 @@
 
 var currentUserKey = '';
 var chatKey = '';
+var friend_id = '';
 
+document.addEventListener('keydown', function (key) {
+    if (key.which === 13) {
+        SendMessage();
+    }
+});
 
 function StartChat(friendKey, friendName, friendPhoto){
 
     var friendList = {friendId : friendKey,userId: currentUserKey };
-
+    friend_id = friendKey;
     var db = firebase.database().ref('friend_list');
     var flag = false;
     db.on('value',function(friends){
@@ -34,11 +40,11 @@ function StartChat(friendKey, friendName, friendPhoto){
          document.getElementById('divStart').setAttribute('style','display:none');
          hideChatList(); 
      }  
-       OnKeyDown();
+
        document.getElementById('divChatName').innerHTML = friendName;
        document.getElementById('imgChat').src = friendPhoto;
        document.getElementById('messages').innerHTML = '';
-
+      
        document.getElementById('textMessage').value = '';
        document.getElementById('textMessage').focus();
 
@@ -48,7 +54,6 @@ function StartChat(friendKey, friendName, friendPhoto){
 
 
 function LoadChatMessages(chatKey , friendPhoto){
-    console.log(currentUserKey,'\n',chatKey);
     var db = firebase.database().ref('chatMessages').child(chatKey);
     db.on('value',function(chats){
         var messageDisplay = ''; 
@@ -71,16 +76,16 @@ function LoadChatMessages(chatKey , friendPhoto){
                     </div>`;
             }else{
                 messageDisplay += `<div class="row justify-content-end">
-                <div class="col-6 col-sm-7 col-md-7">
-                <p class="sent float-right">
-                ${chat.msg}
-                    <span class="time float-right" title="${dateTime[0]}">${dateTime[1]}</span>
-                </p>
-                </div>
-                <div class="col-2 col-sm-1 col-md-1">
-                    <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
-                </div>
-                </div>`;
+                    <div class="col-6 col-sm-7 col-md-7">
+                    <p class="sent float-right">
+                    ${chat.msg}
+                        <span class="time float-right" title="${dateTime[0]}">${dateTime[1]}</span>
+                    </p>
+                    </div>
+                    <div class="col-2 col-sm-1 col-md-1">
+                        <img src="${firebase.auth().currentUser.photoURL}" alt="chat pic" class="chat_pic rounded-circle"/>
+                    </div>
+                    </div>`;
             }
         });
         document.getElementById('messages').innerHTML = messageDisplay;
@@ -98,13 +103,13 @@ function hideChatList(){
     document.getElementById('side-2').classList.remove('d-none');
 }
 
-function OnKeyDown(){
-    document.addEventListener('keydown',function (key) {
-        if(key.which === 13){
-            SendMessage();
-        }
-    });
-}
+// function OnKeyDown(){
+//     document.addEventListener('keydown',function (key) {
+//         if(key.which === 13){
+//             SendMessage();
+//         }
+//     });
+// }
 
 
  function SendMessage(){
