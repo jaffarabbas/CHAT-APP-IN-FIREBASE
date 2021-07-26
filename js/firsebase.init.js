@@ -1,5 +1,3 @@
-<script src="https://www.gstatic.com/firebasejs/8.8.0/firebase-app.js"></script>
-
 var firebaseConfig = {
   apiKey: "AIzaSyAcB9bKNGtP35oaqahlO6QURecXe4Bwc_8",
   authDomain: "jzchattapp.firebaseapp.com",
